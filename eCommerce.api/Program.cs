@@ -26,11 +26,12 @@ builder.Services.AddSwaggerGen();
 //Add cors related service
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddPolicy("AllowAngular", policy =>
     {
-        builder.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
-
 });
 
 var app = builder.Build();
@@ -43,7 +44,7 @@ app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI(); // adds swagger UI 
 
-app.UseCors(); //Add CORS
+app.UseCors("AllowAngular");  //Add CORS
 
 //Auth
 app.UseAuthentication();
