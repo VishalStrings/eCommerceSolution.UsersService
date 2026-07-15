@@ -16,11 +16,34 @@ builder.Services.AddControllers().AddJsonOptions
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+//Add API explorer services
+builder.Services.AddEndpointsApiExplorer();
+
+//Add swagger generateion services to create swagger specs
+builder.Services.AddSwaggerGen();
+
+//Add cors related service
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    });
+
+});
+
 var app = builder.Build();
 
 app.UseExceptionHandlingMiddleware();
 //Routing
 app.UseRouting();
+
+//adds endpoint that can serve the swagger.json
+app.UseSwagger();
+app.UseSwaggerUI(); // adds swagger UI 
+
+app.UseCors(); //Add CORS
 
 //Auth
 app.UseAuthentication();

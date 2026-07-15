@@ -55,7 +55,7 @@ namespace eCommerce.api.Controllers
             return Ok(authenticationResponse);
         }
 
-        [Route("All")]
+        [Route("All")] 
         [HttpGet]
         public async Task<IActionResult>GetAll()
         {
