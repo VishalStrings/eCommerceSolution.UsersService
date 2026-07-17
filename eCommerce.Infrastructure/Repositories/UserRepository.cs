@@ -12,7 +12,7 @@ using Dapper;
 
 namespace eCommerce.Infrastructure.Repositories
 {
-    internal class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DapperDbContext _dbContext;
 
@@ -24,13 +24,7 @@ namespace eCommerce.Infrastructure.Repositories
         {
             user.UserID = Guid.NewGuid();
 
-            string query = """
-                            INSERT INTO public."Users"
-                            ("UserID", "Email", "Password", "PersonName", "Gender") 
-                            VALUES (@UserID, @Email, @Password, @PersonName, @Gender);
-                            """;
-
-            //string query = "INSERT INTO public.\"Users\" (\"UserID\", \"Email\", \"Password\", \"PersonName\", \"Gender\") VALUES (@UserID, @Email, @Password, @PersonName, @Gender)";
+            string query = "INSERT INTO public.\"Users\" (\"UserID\", \"Email\", \"Password\", \"PersonName\", \"Gender\") VALUES (@UserID, @Email, @Password, @PersonName, @Gender)";
             int rowsAffected =
             await _dbContext.DbConnection.ExecuteAsync(query, user);
 
@@ -47,15 +41,32 @@ namespace eCommerce.Infrastructure.Repositories
 
         public async Task<ApplicationUser?> GetUserByEmailAndPassword(string? email, string? password)
         {
-            string query = """
-                SELECT * FROM "Users" WHERE "Email" = @email and "Password" = @password
-                """;
             var parameters = new { email = email, password = password };
+            string query = " SELECT * FROM \"Users\" Where \"Email\" = @email and \"Password\" = @password ";
 
-            ApplicationUser? user = await _dbContext.DbConnection.QueryFirstOrDefaultAsync<ApplicationUser>(query, parameters);
+
+
+            eCommerce.Core.Entities.ApplicationUser? user = await _dbContext.DbConnection.QueryFirstOrDefaultAsync<ApplicationUser>(query, parameters);
 
             return user;
            
         }
+
+        public async Task<UserDTO?> GetUserByUserID(Guid userID)
+        {
+            string query = " SELECT * FROM public.\"Users\" Where \"UserID\" = @userID";
+            var parameters = new { userID = userID };
+
+                 var user = await 
+                _dbContext.DbConnection.QueryFirstOrDefaultAsync
+                <UserDTO>(query, parameters);
+
+            return user;
+
+        }
+
+
+
+
     }
 }

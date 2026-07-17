@@ -1,9 +1,11 @@
-﻿using eCommerce.Core.Entities;
+﻿using eCommerce.Core.DTO;
+using eCommerce.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace eCommerce.Core.RepositortyContracts
 {
@@ -22,5 +24,7 @@ namespace eCommerce.Core.RepositortyContracts
         /// <param name="password"></param>
         /// <returns></returns>
         Task <ApplicationUser?>GetUserByEmailAndPassword(string? email, string? password);
+
+        Task<UserDTO?> GetUserByUserID(Guid userID);
     }
 }

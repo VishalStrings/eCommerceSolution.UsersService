@@ -71,5 +71,19 @@ namespace eCommerce.Core.Services
                 registeredUser.Password, registeredUser.Gender, 
                 "token", true );
         }
-    }
+
+        public async Task<UserDTO> GetUserByUserID(Guid? UserID)
+        {
+            if(UserID == null)
+            {
+                return null;
+            }
+
+            UserDTO? user = await _userRepository.GetUserByUserID(UserID.Value);
+
+            return user;
+        }
+
+
+}
 }
