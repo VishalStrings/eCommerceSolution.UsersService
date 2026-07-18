@@ -17,17 +17,17 @@ namespace eCommerce.api.Controllers
         }
 
         // GET /api/Users/{userID}
-        [HttpGet("{userID}")]
-        public async  Task<IActionResult> GetUserByUserID(Guid? UserID)
+        [HttpGet]
+        public async Task<IActionResult> GetUserByUserID(Guid UserID)
         {
-            if(UserID == Guid.Empty || UserID == null)
+            if (UserID == Guid.Empty || UserID == null)
             {
                 return BadRequest("Invalid UserID");
             }
 
             UserDTO? response = await _usersService.GetUserByUserID(UserID);
 
-            if(response == null)
+            if (response == null)
             {
                 return NotFound(response);
             }
@@ -36,4 +36,5 @@ namespace eCommerce.api.Controllers
         }
 
     }
+        
 }

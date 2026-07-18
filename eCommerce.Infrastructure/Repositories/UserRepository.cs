@@ -54,7 +54,7 @@ namespace eCommerce.Infrastructure.Repositories
 
         public async Task<UserDTO?> GetUserByUserID(Guid userID)
         {
-            string query = " SELECT * FROM public.\"Users\" Where \"UserID\" = @userID";
+            string query = " SELECT \"UserID\",\"Email\",\"PersonName\",\"Gender\" FROM public.\"Users\" Where \"UserID\" = @userID";
             var parameters = new { userID = userID };
 
                  var user = await 
