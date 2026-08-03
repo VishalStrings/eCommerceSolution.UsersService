@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.DTO;
+using eCommerce.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace eCommerce.Core.ServiceContracts
 
         Task<AuthenticationResponse> Register(RegisterRequest registerRequest);
 
-        Task<UserDTO> GetUserByUserID(Guid? UserID);
+        Task<ApplicationUser> GetUserByUserID(Guid? UserID);
 
     }
 }

@@ -82,14 +82,15 @@ namespace eCommerce.Core.Services
             };
         }
 
-        public async Task<UserDTO> GetUserByUserID(Guid? UserID)
+        public async Task<ApplicationUser> GetUserByUserID(Guid? UserID)
         {
-            if(UserID == null)
+            ApplicationUser? user = await _userRepository.GetUserByUserID(UserID.Value);
+            _mapper.Map<UserDTO>(user);
+
+            if (UserID == null)
             {
                 return null;
             }
-
-            UserDTO? user = await _userRepository.GetUserByUserID(UserID.Value);
 
             return user;
         }

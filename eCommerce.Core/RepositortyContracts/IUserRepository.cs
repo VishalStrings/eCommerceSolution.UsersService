@@ -25,6 +25,6 @@ namespace eCommerce.Core.RepositortyContracts
         /// <returns></returns>
         Task <ApplicationUser?>GetUserByEmailAndPassword(string? email, string? password);
 
-        Task<UserDTO?> GetUserByUserID(Guid userID);
+        Task<ApplicationUser?> GetUserByUserID(Guid userID);
     }
 }
