@@ -2,6 +2,9 @@ using eCommerce.Infrastructure;
 using eCommerce.Core;
 using eCommerce.api.Middlewares;
 using System.Text.Json.Serialization;
+using eCommerce.Core.Mappers;
+using FluentValidation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,14 +36,16 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+//automapper class added all the mappingprofile classes automatically
+builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
+
+//Fluent Validation
+builder.Services.AddFluentValidationAutoValidation();
+
 
 var app = builder.Build();
 
 app.UseExceptionHandlingMiddleware();
-//Routing
-app.UseRouting();
-
-//adds endpoint that can serve the swagger.json
 app.UseSwagger();
 app.UseSwaggerUI(); // adds swagger UI 
 
@@ -53,6 +58,6 @@ app.UseAuthorization();
 //Controller routrs
 app.MapControllers();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World Polly");
 
 app.Run();

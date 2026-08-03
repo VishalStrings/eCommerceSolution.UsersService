@@ -41,23 +41,25 @@ namespace eCommerce.api.Controllers
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
             Guid g = new Guid();
-            var authenticationResponse =  new AuthenticationResponse(g, "vishal@gmail.com", "Vishal","Male", "12345678", true  );
+
+            if (loginRequest == null)
+            {
+                return BadRequest("Invalid login request");
+            }
+
+            AuthenticationResponse authenticationResponse = await _usersService.Login(loginRequest);
+
+            if (authenticationResponse == null || authenticationResponse.Success == false)
+            {
+                return Unauthorized(authenticationResponse);
+            }
 
             return Ok(authenticationResponse);
-
-            //if (loginRequest == null)
-            //{
-            //    return BadRequest("Invalid login request");
-            //}
-
-            //AuthenticationResponse authenticationResponse = await _usersService.Login(loginRequest);
-
-            //if (authenticationResponse == null || authenticationResponse.Success == false)
-            //{
-            //    return Unauthorized(authenticationResponse);
-            //}
-
-            //return Ok(authenticationResponse);
+        }
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok("API is working");
         }
 
         [Route("All")] 
@@ -65,7 +67,6 @@ namespace eCommerce.api.Controllers
         public async Task<IActionResult>GetAll()
         {
             return Ok("Hi, I am working");
-
         }
     }
 }

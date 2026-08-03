@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.DTO;
+﻿using AutoMapper;
+using eCommerce.Core.DTO;
 using eCommerce.Core.Entities;
 using eCommerce.Core.RepositortyContracts;
 using eCommerce.Core.ServiceContracts;
@@ -11,13 +12,16 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Core.Services
 {
-    internal class UsersService : IUsersService
+    public class UsersService : IUsersService
     {
         private readonly IUserRepository _userRepository;
 
-        public UsersService(IUserRepository userRepository)
+        public readonly IMapper _mapper;
+
+        public UsersService(IUserRepository userRepository, IMapper mapper)
         {
             this._userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public Task<ApplicationUser?> AddUser(ApplicationUser user)
@@ -41,7 +45,10 @@ namespace eCommerce.Core.Services
                 return null; 
             }
 
-            return new AuthenticationResponse(user.UserID, user.Email, user.PersonName, user.Gender, "Token", Success: true);
+            //as AuthenticationResponse is of record type we can with, to reinitialize the proprty  
+            return _mapper.Map<AuthenticationResponse>(user) with { 
+            Success = true, Token = "token"
+            };
         }
 
         public async Task<AuthenticationResponse> Register(RegisterRequest registerRequest)
@@ -65,11 +72,14 @@ namespace eCommerce.Core.Services
             {
                 return null;
             }
-            
-              return new AuthenticationResponse
-                (registeredUser.UserID, registeredUser.Email,
-                registeredUser.Password, registeredUser.Gender, 
-                "token", true );
+
+            //as AuthenticationResponse is of record type we can with, to reinitialize the proprty
+            //
+            return _mapper.Map<AuthenticationResponse>(registeredUser) with
+            {
+                Success = true,
+                Token = "token"
+            };
         }
 
         public async Task<UserDTO> GetUserByUserID(Guid? UserID)

@@ -13,5 +13,13 @@ namespace eCommerce.Core.DTO
         string? Gender,
         string? Token,
         bool Success
-        );
+        )
+    {
+
+        //secondary parameter list constr - it invoke the primary contsr
+        public AuthenticationResponse(): this(default,default,default, default, default,default)
+        {
+            
+        }
+    }
 }

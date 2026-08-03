@@ -43,9 +43,6 @@ namespace eCommerce.Infrastructure.Repositories
         {
             var parameters = new { email = email, password = password };
             string query = " SELECT * FROM \"Users\" Where \"Email\" = @email and \"Password\" = @password ";
-
-
-
             eCommerce.Core.Entities.ApplicationUser? user = await _dbContext.DbConnection.QueryFirstOrDefaultAsync<ApplicationUser>(query, parameters);
 
             return user;
@@ -57,12 +54,10 @@ namespace eCommerce.Infrastructure.Repositories
             string query = " SELECT \"UserID\",\"Email\",\"PersonName\",\"Gender\" FROM public.\"Users\" Where \"UserID\" = @userID";
             var parameters = new { userID = userID };
 
-                 var user = await 
-                _dbContext.DbConnection.QueryFirstOrDefaultAsync
+            using var user = _dbContext.DbConnection;
+                
+                return await user.QueryFirstOrDefaultAsync
                 <UserDTO>(query, parameters);
-
-            return user;
-
         }
 
 
